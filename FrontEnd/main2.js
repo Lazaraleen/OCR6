@@ -3,6 +3,7 @@ const divcat = document.querySelector(".divcat");
 let dataFich;
 let categorie = new Array();
 let currentCategory = 'Tous';
+console.log(localStorage);
 
 async function getWorks () {
     // vider la gallerie des Works

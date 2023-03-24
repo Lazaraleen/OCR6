@@ -1,5 +1,5 @@
-
-function login() {
+document.querySelector("#connect").addEventListener("click", function(event){
+    event.preventDefault();
     // Récupérer les données du formulaire
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -16,19 +16,22 @@ function login() {
     .then(data => {
         console.log(data);
       // Empêcher l'accès à la page juste en cliquant sur "se connecter"
-        document.querySelector("#connect").addEventListener("click", function(event){
-            event.preventDefault();
-        });
       // Stocker les informations utilisateur localement
       localStorage.setItem("token", data.token);
       console.log(data.token);
       
       // Rediriger l'utilisateur vers la page d'accueil
-      window.location.href = "./index.html";
+      if (localStorage.token !== "undefined") { window.location.href = "./index.html"; }
+      else { 
+        window.location.href = "./login.html"; 
+        alert("Email ou mot de passe incorrect.");
+      }
+      
     })
     .catch(error => {
       // Afficher un message d'erreur pour l'utilisateur
       console.error("Erreur lors de la connexion:", error);
-      alert("Email ou mot de passe incorrect.");
     });
-}
+});
+
+

@@ -200,7 +200,66 @@ button {
 	padding: 10px 20px;
 	margin: 0 15px;
 	border-radius: 20px;
-	stroke: 2px #1D6154;
 	color: #1D6154;
 	font-weight: bold;
+}
+
+.selected {
+	background-color: #1D6154;
+	border: none;
+	color: white;
+}
+
+#log {
+	margin-top: 150px;
+	margin-bottom: 350px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+form p {
+	margin-bottom: 7px;	
+	margin-top: 30px;
+}
+
+input {
+	height: 51px;
+	width: 379px;
+}
+
+#log button {
+	margin: 30px auto;
+	width: 179px;
+	background-color: #1D6154;
+	border: none;
+	color: white;
+}
+
+.forget {
+	margin: auto;
+}
+
+.forget a {
+	color: #1D6154;
+	font-weight: bold;
+}
+
+#login {
+	font-weight: bold;
+}
+
+header a {
+	text-decoration: none;
+	color: black;
 }

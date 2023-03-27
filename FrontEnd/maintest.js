@@ -12,6 +12,7 @@ async function getWorks () {
     try {
         const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
         data = await response.json();
+        
         if (currentCategory == 'Tous') { 
             // Affiche tous les projets
             project(data);       
@@ -44,7 +45,12 @@ async function getCategories () {
         console.error("Une erreur s'est produite :", error);
     }
 }
-getCategories();
+
+// Si la personne n'est pas connectée, afficher les catégories
+if (localStorage.token == "undefined" || localStorage.length == 0) { 
+    getCategories(); 
+}
+
 
 
 // Créer un bouton pour les catégories
@@ -71,9 +77,7 @@ function filterWorks (button) {
     button.classList.add('selected');
     currentCategory = button.id;   
     getWorks ();     
-};  
-
-
+} 
 
 // Afficher les projets pour les retirer du HTML
 function project(key){
@@ -91,3 +95,24 @@ function project(key){
     }
 }
 
+
+// Changer login pour logout
+if (localStorage.token !== "undefined" || localStorage.length !== 0) {
+    const login = document.querySelector("#login");
+    const logout = document.querySelector("#logout");
+    logout.classList.remove("invisible");
+    login.classList.add("invisible");
+} else {
+    logout.addEventListener("click", deconnect());
+    console.log(login);
+    console.log(logout);
+}
+
+// Pour se déconnecter
+function deconnect() {
+    console.log(localStorage);
+    login.classList.remove("invisible");
+    logout.classList.add("invisible");
+    console.log(logout);
+    localStorage.clear();
+}

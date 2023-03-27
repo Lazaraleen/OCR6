@@ -1,38 +1,93 @@
 const gallery = document.querySelector(".gallery");
-let data = [];
+const divcat = document.querySelector(".divcat");
+let dataFich;
 let categorie = new Array();
-let valSelect = new Array();
+const login = document.querySelector("#login");
+const logout = document.querySelector("#logout");
+const span = document.querySelectorAll("span");
+const edition = document.querySelector(".edition");
+let modal = null;
+let currentCategory = 'Tous';
+console.log(localStorage);
 
-async function fetchUser () {
+async function getWorks () {
+    // vider la gallerie des différents travaux
+    gallery.innerHTML= "";
+
     try {
-        const response = await fetch('http://localhost:5678/api/works');
+        const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
         data = await response.json();
-        let valSelect = new Array ();
-        tabCat();
-        catego(); 
+        
+        if (currentCategory == 'Tous') { 
+            // Affiche tous les projets
+            project(data);       
 
-        return data;
+        } else {
+            // Créer un fichier newData dans lequel on mettra les projets filtrés par catégories puis l'afficher
+            const newData = data.filter(work => work.category.name === currentCategory);
+            project(newData);
+        }
+        
     } catch (error) {
-        console.error(error);
+        console.error("Une erreur s'est produite :", error);
     }
 }
 
-fetchUser();
+getWorks();
+
+
+// **************************************  CATEGORIES **************************************
 
 // Créer un tableau pour les catégories
-function tabCat() {
-    categorie[0]=0;
-    count=1;
-    
-    for (let cat of data) {
-        categorie[count] = cat.category.name;
-        count++;
+async function getCategories () {
+    try {
+        const response = await fetch("http://" + window.location.hostname + ":5678/api/categories");
+        const categories = await response.json();
+        categories.unshift({name: 'Tous'});
+        buttonCat(categories);
+    } catch (error) {
+        console.error("Une erreur s'est produite :", error);
     }
 }
+
+// Si la personne n'est pas connectée, afficher les catégories
+if (localStorage.token == "undefined" || localStorage.length == 0) { 
+    getCategories(); 
+}
+
+
+// Créer un bouton pour les catégories
+function buttonCat (cat) {
+    for (let i of cat) {
+        const button = document.createElement("button");
+        button.setAttribute("id",i.name);
+        button.innerText = i.name;
+        divcat.appendChild(button);
+        
+        // filterWorks (button, cat);
+        button.addEventListener("click", () => filterWorks(button));
+    }
+}
+
+// Filtrer les catégories
+function filterWorks (button) {
+    console.log("début");
+    const allfilter = [...divcat.children];
+    console.log(allfilter);
+    allfilter.forEach(element => {
+        element.classList.remove('selected');
+    });
+    button.classList.add('selected');
+    currentCategory = button.id;   
+    getWorks ();     
+} 
+
+
+// **************************************  AFFICHER ET CREER LES TRAVAUX **************************************
 
 // Afficher les projets pour les retirer du HTML
 function project(key){
-    for (let i of data) {
+    for (let i of key) {
         const figureElement = document.createElement("figure");
         const imageElement = document.createElement("img");
         const figcaptionElement = document.createElement("figcaption");
@@ -47,45 +102,47 @@ function project(key){
 }
 
 
-// Créer un bouton pour les catégories
-function catego(){
-    const divcat = document.querySelector(".divcat");
-    const label = document.createElement("label");
-    const select = document.createElement("select");
-    select.setAttribute("id","category");
-    select.setAttribute("onchange", "getSelectedValue()");
-    label.innerHTML = 'Catégorie :';
-    
-    // Trier le tableau catégorie
-    const sortUnique = categorie.sort();
-    const unique = new Set(categorie);
-    
-    divcat.appendChild(label);
-    divcat.appendChild(select);
-    
-    for (let choix of unique) {
-        const option = document.createElement("option");
-        if (choix === 0) {option.innerText = "Toutes catégories";
-            option.value = 'Toutes catégories';}
-            else { option.innerText = choix;
-                option.value = choix;};
-        select.appendChild(option);
+// ************************************** LOGIN ET LOGOUT  **************************************
+
+// Changer login pour logout
+if (localStorage.token !== "undefined" && localStorage.length !== 0) {
+    logout.classList.remove("invisible");
+    login.classList.add("invisible");
+    edition.classList.remove("invisible");
+    for (let i = 0; i < span.length; i++) {        
+        span[i].classList.remove("invisible");
     }
-
-    filter(valSelect);
+    logout.addEventListener("click", deconnect());
 }
 
-function getSelectedValue ()
-{
-    let selectedValue = document.getElementById("category").value;
-    // console.log(selectedValue);
-    valSelect = selectedValue;
-    console.log(valSelect);
+// Pour se déconnecter
+function deconnect() {
+    console.log(logout);
+    localStorage.clear();
 }
 
-// Filtrer les produits
-function filter (value) {
-    if (value !== 'Toutes catégories') {project(value);}
-    else {project(data);};
+// **************************************  MODAL **************************************
+
+
+
+const openModal = function (e) {
+    e.preventDefault(); 
+    const target = document.querySelector('.modal1');
+    target.style.display = null;
+    modal = target;
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('js-modal-close').addEventListener('click', closeModal);
 }
 
+const closeModal = function (e) {
+    if(modal === null) return;
+    e.preventDefault();
+    modal.style.display = "none";
+    modal.removeEventListener('click', closeModal);
+    modal.querySelector('js-modal-close').addEventListener('click', closeModal);
+    modal = null;
+}
+
+document.querySelectorAll('.js-modal').forEach(e => {
+    e.addEventListener('click', openModal);
+})

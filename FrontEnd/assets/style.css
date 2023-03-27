@@ -186,6 +186,8 @@ footer nav ul {
 	margin: 2em
 }
 
+/* **************************************************************************** */
+
 .divcat {
 	display: flex;
 	justify-content: center;
@@ -255,11 +257,154 @@ input {
 	font-weight: bold;
 }
 
-#login {
+#login2 {
 	font-weight: bold;
 }
 
 header a {
 	text-decoration: none;
 	color: black;
+}
+
+/* Modification d'affichage lorsque connecté */
+
+aside a {
+	text-decoration: none;
+	color: black;
+}
+
+.change {
+	cursor: pointer;
+}
+span {
+	margin: auto;
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	margin-top: 15px;
+	cursor: pointer;
+}
+
+span i {
+	font-size: 15px;
+}
+
+span p {
+	padding-left: 10px;
+	font-size: 14px;
+}
+
+aside {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+aside span {
+	margin: 0;
+	margin-left: 30px;
+	width: min-content;
+}
+
+#portfolio aside h2 {
+	margin: 0px;
+}
+
+article span {
+	margin-left: 0px;
+	margin-bottom: 20px;
+}
+
+.edition {
+	background-color: black;
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
+	color: white;
+	width: 100vw;
+	margin-left: -120px;
+}
+
+.edition button {
+	background-color: white;
+	color: black;
+	border-radius: 20px;
+	padding: 10px 20px;
+	margin: 0 20px;
+}
+
+.edition span {
+	width: min-content;
+	margin: 0px;
+}
+
+/* ******************************************************** */
+/* CSS pour fenêtre modal */
+
+.fa-trash-can {
+	background-color: black;
+	color: white;
+}
+
+.js-modal-close {
+	margin: 5px;
+	padding: 0;
+	border-radius: 0;
+	border: 0;
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	background-color: white;
+}
+.js-modal-close i {
+	color: black;
+	height: 15px;
+	width: 15px;
+	padding: 5px;
+}
+
+.modal1 {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-wrapper {
+	display: flex;
+	justify-content: center;
+	overflow: auto;
+	width: 630px;
+	height: 730px;
+	max-width: 80vw;
+	max-height: 80vh;
+	padding: 30px;
+	background-color: #fff;
+	font-family: 'Work Sans';
+}
+
+.modal-wrapper h2 {
+	font-size: 16px;
+}
+
+.green {
+	width: 179px;
+	background-color: #1D6154;
+	border: none;
+	color: white;
+}
+
+/* ******************************************************** */
+.invisible {
+	display: none;
 }

@@ -345,11 +345,6 @@ article span {
 /* ******************************************************** */
 /* CSS pour fenêtre modal */
 
-.fa-trash-can {
-	background-color: black;
-	color: white;
-}
-
 .js-modal-close {
 	margin: 5px;
 	padding: 0;
@@ -381,8 +376,6 @@ article span {
 }
 
 .modal-wrapper {
-	display: flex;
-	justify-content: center;
 	overflow: auto;
 	width: 630px;
 	height: 730px;
@@ -393,8 +386,29 @@ article span {
 	font-family: 'Work Sans';
 }
 
+.align {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 70px;
+
+}
+
+.modal-wrapper hr {
+	border: 1px solid #B3B3B3;
+	width: 100%;
+	margin-bottom: 40px;
+}
+
 .modal-wrapper h2 {
-	font-size: 16px;
+	font-size: 26px;
+	font-family: 'Work Sans' ;
+	font-weight: lighter;
+	color: black;
+}
+
+.modal-wrapper p {
+	margin-top: 20px;
 }
 
 .green {
@@ -402,6 +416,47 @@ article span {
 	background-color: #1D6154;
 	border: none;
 	color: white;
+}
+
+
+.modal-gallery {
+	display: grid;
+	column-gap: 10px;
+	grid-template-columns: auto auto auto auto auto;
+	padding: 10px;
+}
+
+.modal-gallery div {
+	margin-bottom: 10px;
+}
+
+.modal-gallery img {
+	width: 100%;
+}
+
+.modal-gallery button {
+	border: none;
+	background-color: white;
+	color: black;
+	text-align: start;
+	margin: 0;
+	padding: 0;
+}
+
+.fa-trash-can {
+	background-color: black;
+	color: white;
+	padding: 4px;
+}
+
+.modal-gallery .trash {
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	top: 25px;
+	right: 5px;
+	background-color: transparent;
 }
 
 /* ******************************************************** */

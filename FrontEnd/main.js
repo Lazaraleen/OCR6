@@ -1,7 +1,5 @@
 const gallery = document.querySelector(".gallery");
 const divcat = document.querySelector(".divcat");
-let dataFich;
-let categorie = new Array();
 const login = document.querySelector("#login");
 const logout = document.querySelector("#logout");
 const span = document.querySelectorAll("span");
@@ -123,7 +121,7 @@ function deconnect() {
 
 // **************************************  MODAL **************************************
 
-
+const modalGallery = document.querySelector(".modal-gallery");
 
 const openModal = function (e) {
     e.preventDefault(); 
@@ -131,7 +129,8 @@ const openModal = function (e) {
     target.style.display = null;
     modal = target;
     modal.addEventListener('click', closeModal);
-    modal.querySelector('js-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+    modalWorks();
 }
 
 const closeModal = function (e) {
@@ -146,3 +145,31 @@ const closeModal = function (e) {
 document.querySelectorAll('.js-modal').forEach(e => {
     e.addEventListener('click', openModal);
 })
+
+async function modalWorks () {
+    modalGallery.innerHTML= "";
+
+    try {
+        const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
+        data = await response.json();
+        let dataImg = data.imageUrl;
+        data.forEach(e => {
+            const imageElement = document.createElement("img");
+            const editButton = document.createElement("button");
+            const trashButton = document.createElement("button");
+            const div = document.createElement("div");
+            imageElement.src = e.imageUrl;
+            editButton.innerText = 'éditer';
+            trashButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+            trashButton.classList.add("trash");
+            modalGallery.appendChild(div);
+            div.appendChild(trashButton);
+            div.appendChild(imageElement);
+            div.appendChild(editButton);
+            // console.log(e.imageUrl)
+        });     
+    } catch (error) {
+        console.error("Une erreur s'est produite :", error);
+    }
+}
+

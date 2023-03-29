@@ -6,7 +6,7 @@ const span = document.querySelectorAll("span");
 const edition = document.querySelector(".edition");
 let modal = null;
 let currentCategory = 'Tous';
-console.log(localStorage);
+// console.log(localStorage);
 
 async function getWorks () {
     // vider la gallerie des différents travaux
@@ -115,7 +115,7 @@ if (localStorage.token !== "undefined" && localStorage.length !== 0) {
 
 // Pour se déconnecter
 function deconnect() {
-    console.log(logout);
+    // console.log(logout);
     localStorage.clear();
 }
 
@@ -130,6 +130,7 @@ const openModal = function (e) {
     modal = target;
     modal.addEventListener('click', closeModal);
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
     modalWorks();
 }
 
@@ -139,37 +140,71 @@ const closeModal = function (e) {
     modal.style.display = "none";
     modal.removeEventListener('click', closeModal);
     modal.querySelector('js-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
     modal = null;
+}
+
+const stopPropagation = function (e) {
+    e.stopPropagation();
 }
 
 document.querySelectorAll('.js-modal').forEach(e => {
     e.addEventListener('click', openModal);
 })
 
+window.addEventListener('keydown', function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        closeModal(e);
+    }
+})
+
 async function modalWorks () {
     modalGallery.innerHTML= "";
-
+    let works;
     try {
         const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
         data = await response.json();
         let dataImg = data.imageUrl;
         data.forEach(e => {
-            const imageElement = document.createElement("img");
-            const editButton = document.createElement("button");
-            const trashButton = document.createElement("button");
-            const div = document.createElement("div");
-            imageElement.src = e.imageUrl;
-            editButton.innerText = 'éditer';
-            trashButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-            trashButton.classList.add("trash");
-            modalGallery.appendChild(div);
-            div.appendChild(trashButton);
-            div.appendChild(imageElement);
-            div.appendChild(editButton);
-            // console.log(e.imageUrl)
-        });     
+            console.log(e.imageUrl);
+            works.innerHTML= `
+                <div>
+                    <button class="trash">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <img src="e.imageUrl">
+                    <button>éditer</button>
+                </div>
+            `;
+            modalGallery = modalGallery + works;
+        });  
     } catch (error) {
         console.error("Une erreur s'est produite :", error);
     }
 }
 
+function workList (work) {
+    works = [];
+    works = work;
+    console.log(works);
+    // appendTo(element) {
+    //     element.innerHTML = `
+    //     `
+    // }
+}
+
+// **************************************  SUPPRIMER TRAVAUX EXISTANTS **************************************
+
+
+function delWork (id) {
+    id.preventDefault();
+    fetch("http://" + window.location.hostname + ":5678/api/works/" + id, {
+    method: 'DELETE', 
+    headers: {
+        'Content-type': 'application/json; charset=UTF-8' 
+    },    
+    }) 
+    .then(response => response.json())
+    .then(data => console.log(data)) 
+    .catch(err => console.log(err))
+};

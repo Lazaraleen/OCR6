@@ -56,10 +56,10 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 h1{
@@ -71,11 +71,10 @@ h1{
 	color: #B1663C
 }
 
-h1 > span {
+h1 span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -121,7 +120,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
+.portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
 }
@@ -307,7 +306,7 @@ aside span {
 	width: min-content;
 }
 
-#portfolio aside h2 {
+.portfolio aside h2 {
 	margin: 0px;
 }
 
@@ -351,6 +350,7 @@ article span {
 	border-radius: 0;
 	border: 0;
 	position: relative;
+	right: -70px;
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
@@ -391,7 +391,10 @@ article span {
 	flex-direction: column;
 	align-items: center;
 	padding: 0 70px;
+}
 
+.modal-wrapper .align h2 {
+	margin-bottom: 50px;
 }
 
 .modal-wrapper hr {
@@ -427,6 +430,7 @@ article span {
 }
 
 .modal-gallery div {
+	position: relative;
 	margin-bottom: 10px;
 }
 
@@ -450,14 +454,15 @@ article span {
 }
 
 .modal-gallery .trash {
-	position: relative;
+	position: absolute;
 	display: flex;
 	justify-content: flex-end;
 	width: 100%;
-	top: 25px;
+	top: 5px;
 	right: 5px;
 	background-color: transparent;
 }
+
 
 /* ******************************************************** */
 .invisible {

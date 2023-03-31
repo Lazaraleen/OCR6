@@ -356,6 +356,7 @@ article span {
 	justify-content: flex-end;
 	background-color: white;
 }
+
 .js-modal-close i {
 	color: black;
 	height: 15px;
@@ -363,7 +364,7 @@ article span {
 	padding: 5px;
 }
 
-.modal1 {
+#modal {
 	position: fixed;
 	display: flex;
 	align-items: center;

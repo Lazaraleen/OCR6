@@ -4,9 +4,11 @@ const login = document.querySelector("#login");
 const logout = document.querySelector("#logout");
 const span = document.querySelectorAll("span");
 const edition = document.querySelector(".edition");
+let trashButtons = [];
 let modal = null;
 let currentCategory = 'Tous';
-// console.log(localStorage);
+const token = localStorage.token;
+console.log(token);
 
 async function getWorks () {
     // vider la gallerie des différents travaux
@@ -102,6 +104,45 @@ function project(key){
 
 // ************************************** LOGIN ET LOGOUT  **************************************
 
+document.querySelector("#connect").addEventListener("click", function(event){
+    event.preventDefault();
+    // Récupérer les données du formulaire
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    
+    // Envoyer les données à l'API
+    fetch("http://" + window.location.hostname + ":5678/api/users/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+      // Empêcher l'accès à la page juste en cliquant sur "se connecter"
+      // Stocker les informations utilisateur localement
+      localStorage.setItem("token", data.token);
+      console.log(data.token);
+      
+      // Rediriger l'utilisateur vers la page d'accueil
+      if (localStorage.token !== "undefined") { window.location.href = "./index.html"; }
+      else { 
+        window.location.href = "./login.html"; 
+        alert("Email ou mot de passe incorrect.");
+      }
+      
+    })
+    .catch(error => {
+      // Afficher un message d'erreur pour l'utilisateur
+      console.error("Erreur lors de la connexion:", error);
+    });
+});
+
+
+
+
 // Changer login pour logout
 if (localStorage.token !== "undefined" && localStorage.length !== 0) {
     logout.classList.remove("invisible");
@@ -163,44 +204,57 @@ async function modalWorks () {
     try {
         const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
         data = await response.json();
-        let dataImg = data.imageUrl;
-        let suppr;
         data.forEach(e => {
             const imageElement = document.createElement("img");
             const editButton = document.createElement("button");
             const trashButton = document.createElement("checkbox");
-            // const forArrow = document.createElement("button");
             const div = document.createElement("div");
+            const icon = document.createElement("i");
             imageElement.src = e.imageUrl;
             editButton.innerText = 'éditer';
-            // forButton.innerHTML = '<i class="fa-solid fa-arrows-maximize"></i>';
-            trashButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
             trashButton.classList.add("trash");
-            trashButton.setAttribute("id", "trash"+ e.id);
-            suppr = document.querySelector("#trash"+ e.id);
-            console.log(suppr);
-            // suppr.addEventListener('click', console.log('OK'));
-            // suppr.addEventListener("click", delWork(e.id));
+            icon.classList.add("fa-solid");
+            icon.classList.add("fa-trash-can");
+            icon.setAttribute("id", e.id);
             modalGallery.appendChild(div);
             div.appendChild(trashButton);
             div.appendChild(imageElement);
             div.appendChild(editButton);
-        });     
+            trashButton.appendChild(icon);
+        });
     } catch (error) {
         console.error("Une erreur s'est produite :", error);
     }
+
+    const buttonTrash = document.getElementsByClassName("fa-trash-can");
+    for (element of buttonTrash) {
+        element.addEventListener('click', (e) => {console.log (e.target.id)});
+    };
+
+    // buttonTrash.addEventListener('click', (e) => {
+    //     fetch ("http://" + window.location.hostname + ":5678/api/works" + e.target.id, {
+    //         method: "DELETE",
+    //         body: null,
+    //         headers: {
+    //             "Content-type": "application/json; charset=UTF-8",
+    //             Authorization: `Bearer ${token}`,
+    //         }
+    //     })
+    //     .then(response => console.log(response.status))
+    //     .catch((error) => console.log(error));
+    // })
 }
+
 
 
 // **************************************  SUPPRIMER TRAVAUX EXISTANTS **************************************
 
 
 function delWork (id) {
-    id.preventDefault();
     fetch("http://" + window.location.hostname + ":5678/api/works/" + id, {
     method: 'DELETE', 
     headers: {
-        'Content-type': 'application/json; charset=UTF-8' 
+        'Content-type': 'application/json; charset=UTF-8',
     },    
     }) 
     .then(response => response.json())

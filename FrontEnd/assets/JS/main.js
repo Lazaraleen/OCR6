@@ -104,44 +104,6 @@ function project(key){
 
 // ************************************** LOGIN ET LOGOUT  **************************************
 
-document.querySelector("#connect").addEventListener("click", function(event){
-    event.preventDefault();
-    // Récupérer les données du formulaire
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    
-    // Envoyer les données à l'API
-    fetch("http://" + window.location.hostname + ":5678/api/users/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-      // Empêcher l'accès à la page juste en cliquant sur "se connecter"
-      // Stocker les informations utilisateur localement
-      localStorage.setItem("token", data.token);
-      console.log(data.token);
-      
-      // Rediriger l'utilisateur vers la page d'accueil
-      if (localStorage.token !== "undefined") { window.location.href = "./index.html"; }
-      else { 
-        window.location.href = "./login.html"; 
-        alert("Email ou mot de passe incorrect.");
-      }
-      
-    })
-    .catch(error => {
-      // Afficher un message d'erreur pour l'utilisateur
-      console.error("Erreur lors de la connexion:", error);
-    });
-});
-
-
-
 
 // Changer login pour logout
 if (localStorage.token !== "undefined" && localStorage.length !== 0) {
@@ -226,38 +188,39 @@ async function modalWorks () {
         console.error("Une erreur s'est produite :", error);
     }
 
+    // **************************************  SUPPRIMER TRAVAUX EXISTANTS **************************************
     const buttonTrash = document.getElementsByClassName("fa-trash-can");
     for (element of buttonTrash) {
-        element.addEventListener('click', (e) => {console.log (e.target.id)});
+        element.addEventListener('click', (e) => {
+            fetch ("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => console.log(response.status))
+            .catch((error) => console.log(error));
+        })
     };
-
-    // buttonTrash.addEventListener('click', (e) => {
-    //     fetch ("http://" + window.location.hostname + ":5678/api/works" + e.target.id, {
-    //         method: "DELETE",
-    //         body: null,
-    //         headers: {
-    //             "Content-type": "application/json; charset=UTF-8",
-    //             Authorization: `Bearer ${token}`,
-    //         }
-    //     })
-    //     .then(response => console.log(response.status))
-    //     .catch((error) => console.log(error));
-    // })
+    
 }
 
 
+// **************************************  SECONDE MODAL **************************************
+const openModal2 = function (e) {
+    e.preventDefault(); 
+    const target = document.querySelector('.modal2');
+    target.style.display = null;
+    modal = target;
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+    modalWorks();
+}
 
-// **************************************  SUPPRIMER TRAVAUX EXISTANTS **************************************
+document.querySelectorAll('.js-modal2').forEach(e => {
+    e.addEventListener('click', openModal2);
+})
 
 
-function delWork (id) {
-    fetch("http://" + window.location.hostname + ":5678/api/works/" + id, {
-    method: 'DELETE', 
-    headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-    },    
-    }) 
-    .then(response => response.json())
-    .then(data => console.log(data)) 
-    .catch(err => console.log(err))
-};

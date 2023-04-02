@@ -219,6 +219,13 @@ button {
 	flex-direction: column;
 }
 
+#log input {
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -280,6 +287,7 @@ span {
 	width: 80%;
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
 	margin-top: 15px;
 	cursor: pointer;
 }
@@ -429,6 +437,13 @@ article span {
 	color: white;
 }
 
+/* .blue {
+	background-color: #CBD6DC;
+	width: 173px;
+	color: #306685;
+	border: none;
+	margin-top: 21px;
+} */
 
 .modal-gallery {
 	display: grid;
@@ -470,6 +485,7 @@ article span {
 	right: 5px;
 	background-color: transparent;
 }
+
 .modal-ajout-photo {
 	background-color: #E8F1F6;
 	width: 100%;
@@ -484,13 +500,30 @@ article span {
 	color: #B9C5CC;
 }
 
-.modal-ajout-photo button {
+.modal-ajout-photo img {
+	max-height: 173px;
+}
+
+/* .modal-ajout-photo button {
 	background-color: #CBD6DC;
 	width: 173px;
 	color: #306685;
 	border: none;
 	margin-top: 21px;
+} */
+
+.modal-ajout-photo label {
+	background-color: #CBD6DC;
+	width: 173px;
+	color: #306685;
+	border: none;
+	border-radius: 20px;
+	margin: 21px 15px 7px 15px;
+	padding: 10px 20px;
+	font-weight: bold;
+	text-align: center;
 }
+
 .modal-ajout-photo p {
 	font-size: 10px;
 	padding-bottom: 20px;

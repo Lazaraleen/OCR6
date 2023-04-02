@@ -223,4 +223,32 @@ document.querySelectorAll('.js-modal2').forEach(e => {
     e.addEventListener('click', openModal2);
 })
 
+// Choisir une image sur le clic bouton
+const importPhoto = document.querySelector('#importPhoto');
+importPhoto.addEventListener('change', previewFile);
+previewFile();
 
+function previewFile() {
+    const file_extension_regex = /\.(jpg|png)$/i;
+    if (this.files.length === 0 || !file_extension_regex.test (this.files[0].name)) {
+        return;
+    }
+
+    const file = this.files[0];
+    const file_reader = new FileReader();
+    file_reader.readAsDataURL(file);
+    file_reader.addEventListener('load', (e) => displayImage(e,file));
+}
+
+function displayImage (event, file) {
+    const modalAjoutPhoto = document.querySelector('.modal-ajout-photo');
+    modalAjoutPhoto.innerHTML= "";
+    const photo = document.createElement('img');
+    photo.src = event.target.result;
+    modalAjoutPhoto.appendChild(photo);
+}
+
+
+
+
+// REFLECHIR A RENDRE LA PREMIERE MODAL A NOUVEAU FONCTIONNELLE QUAND ON FERME LA SECONDE !!!

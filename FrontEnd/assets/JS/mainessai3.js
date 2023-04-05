@@ -189,27 +189,54 @@ async function modalWorks() {
   // **************************************  SUPPRIMER TRAVAUX EXISTANTS **************************************
   const buttonTrash = document.getElementsByClassName("fa-trash-can");
   for (element of buttonTrash) {
-    element.addEventListener("click", (e) => {
-      fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          console.log(response.status);
-          // modalWorks();
+  //   element.addEventListener("click", (e) => {
+  //     fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-type": "application/json; charset=UTF-8",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       })
+  //       .then((response) => {
+  //         console.log(response.status);
+  //         // modalWorks();
 
-          // ERREUR 204 fait toujours une sorte de logout après la requête
-          // getWorks();
-          // buttonTrash.forEach((e) => {
-          //   e.addEventListener("click", openModal);
-          // });;
-        })
-        .catch((error) => console.log(error));
-    });
+  //         // ERREUR 204 fait toujours une sorte de logout après la requête
+  //         // getWorks();
+  //         // buttonTrash.forEach((e) => {
+  //         //   e.addEventListener("click", openModal);
+  //         // });;
+  //       })
+  //       .catch((error) => console.log(error));
+  //   });
+  // }
+
+
+  const deleteWorks = async (id) => {
+    try {
+      const response = await fetch("http://" + window.location.hostname + ":5678/api/works/" + id, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("http://" + window.location.hostname + ":5678/api/works/" + id);
+      return true;
+    } catch (error) {
+      console.log("error");
+      return false;
+    }
   }
+  
+  element.addEventListener("click", (e) => {
+    console.log(token);
+    deleteWorks(e.target.id).then(() => {
+      project().then((data) => {
+        // renderGallery(data);
+        modalGallery.innerHTML = "";
+        modalWorks(data);
+      });
+    });
+  });
+}
 }
 
 

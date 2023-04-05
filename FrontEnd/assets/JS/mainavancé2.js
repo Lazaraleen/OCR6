@@ -15,7 +15,6 @@ let modal = null;
 let currentCategory = "Tous";
 const token = localStorage.token;
 
-
 async function getWorks() {
   // vider la gallerie des différents travaux
   gallery.innerHTML = "";
@@ -117,6 +116,7 @@ if (localStorage.token !== "undefined" && localStorage.length !== 0) {
 
 // Pour se déconnecter
 function deconnect() {
+  // console.log(logout);
   localStorage.clear();
 }
 
@@ -167,7 +167,7 @@ async function modalWorks() {
     data.forEach((e) => {
       const imageElement = document.createElement("img");
       const editButton = document.createElement("button");
-      const trashButton = document.createElement("button");
+      const trashButton = document.createElement("checkbox");
       const div = document.createElement("div");
       const icon = document.createElement("i");
       imageElement.src = e.imageUrl;
@@ -211,8 +211,6 @@ async function modalWorks() {
     });
   }
 }
-
-
 
 // **************************************  SECONDE MODAL **************************************
 

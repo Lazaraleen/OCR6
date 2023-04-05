@@ -4,23 +4,20 @@ const login = document.querySelector("#login");
 const logout = document.querySelector("#logout");
 const span = document.querySelectorAll("span");
 const edition = document.querySelector(".edition");
-let formPhoto = document.querySelector("#form-photo");
-let catSelect = document.querySelector("#category-select");
-let buttonPhoto = document.querySelector("#submit-photo");
-const photoChoose = document.querySelector(".photoChoose");
-const modalAjoutPhoto = document.querySelector(".modal-ajout-photo");
-
 let trashButtons = [];
 let modal = null;
 let currentCategory = "Tous";
 const token = localStorage.token;
+console.log(token);
 
 async function getWorks() {
   // vider la gallerie des différents travaux
   gallery.innerHTML = "";
 
   try {
-    const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
+    const response = await fetch(
+      "http://" + window.location.hostname + ":5678/api/works"
+    );
     data = await response.json();
 
     if (currentCategory == "Tous") {
@@ -45,7 +42,9 @@ getWorks();
 // Créer un tableau pour les catégories
 async function getCategories() {
   try {
-    const response = await fetch("http://" + window.location.hostname + ":5678/api/categories");
+    const response = await fetch(
+      "http://" + window.location.hostname + ":5678/api/categories"
+    );
     const categories = await response.json();
     categories.unshift({ name: "Tous" });
     buttonCat(categories);
@@ -131,7 +130,9 @@ const openModal = function (e) {
   modal = target;
   modal.addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    .addEventListener("click", stopPropagation);
   modalWorks();
 };
 
@@ -141,26 +142,10 @@ const closeModal = function (e) {
   modal.style.display = "none";
   modal.removeEventListener("click", closeModal);
   modal.querySelector("js-modal-close").addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    .removeEventListener("click", stopPropagation);
   modal = null;
-
-  // const modal1 = document.querySelector(".modal1");
-  // const modal2 = document.querySelector(".modal2");
-  // console.log(modal2.style.display);
-  // if (modal2.style.display === null) {
-  //   modal2.style.display = "none";
-  //   modal2.removeEventListener("click", closeModal);
-  //   modal2.querySelector("js-modal-close").addEventListener("click", closeModal);
-  //   modal2.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
-  //   modal1.style.display = null;
-  // } else {
-  //   modal.style.display = "none";
-  //   modal.removeEventListener("click", closeModal);
-  //   modal.querySelector("js-modal-close").addEventListener("click", closeModal);
-  //   modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
-  //   modal = null;
-  // }
-  
 };
 
 const stopPropagation = function (e) {
@@ -180,7 +165,9 @@ window.addEventListener("keydown", function (e) {
 async function modalWorks() {
   modalGallery.innerHTML = "";
   try {
-    const response = await fetch("http://" + window.location.hostname + ":5678/api/works");
+    const response = await fetch(
+      "http://" + window.location.hostname + ":5678/api/works"
+    );
     data = await response.json();
     data.forEach((e) => {
       const imageElement = document.createElement("img");
@@ -208,39 +195,33 @@ async function modalWorks() {
   const buttonTrash = document.getElementsByClassName("fa-trash-can");
   for (element of buttonTrash) {
     element.addEventListener("click", (e) => {
-      fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
+      fetch(
+        "http://" + window.location.hostname + ":5678/api/works/" + e.target.id,
+        {
           method: "DELETE",
           headers: {
             "Content-type": "application/json; charset=UTF-8",
             Authorization: `Bearer ${token}`,
           },
-        })
-        .then((response) => {
-          console.log(response.status);
-
-          // ERREUR 204 fait toujours une sorte de logout après la requête
-          // getWorks();
-          // buttonTrash.forEach((e) => {
-          //   e.addEventListener("click", openModal);
-          // });;
-        })
+        }
+      )
+        .then((response) => console.log(response.status))
         .catch((error) => console.log(error));
     });
   }
 }
 
 // **************************************  SECONDE MODAL **************************************
-
 const openModal2 = function (e) {
   e.preventDefault();
-  const modal1 = document.querySelector(".modal1");
-  modal1.style.display = "none";
   const target = document.querySelector(".modal2");
   target.style.display = null;
   modal = target;
   modal.addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    .addEventListener("click", stopPropagation);
   modalWorks();
 };
 
@@ -248,6 +229,28 @@ document.querySelectorAll(".js-modal2").forEach((e) => {
   e.addEventListener("click", openModal2);
 });
 
+// Validation du formulaire
+let formPhoto = document.querySelector("#form-photo");
+let catSelect = document.querySelector("#category-select");
+let buttonPhoto = document.querySelector("#submit-photo");
+formPhoto.addEventListener("submit", function(e) {
+  e.preventDefault();
+  let titre = document.querySelector("#titre");
+  let myRegex = /^[a-zA-Z-\s]+$/;
+  
+  console.log(myRegex.test(formPhoto.value));
+  console.log(catSelect.value);
+  if (titre.value == "") {
+      alert("Vous devez remplir le titre");
+  } else if (myRegex.test(titre.value) == false) {
+      alert ("Le titre ne doit comporter que des lettres et des tirets");
+  } else if (catSelect.value == "") {
+      alert ("Vous devez choisir une catégorie");
+  } else {
+      buttonPhoto.classList.remove("grey");
+      buttonPhoto.classList.add("green");
+  }
+});
 
 // Choisir une image sur le clic bouton
 const importPhoto = document.querySelector("#importPhoto");
@@ -270,48 +273,8 @@ function displayImage(event, file) {
   const modalAjoutPhoto = document.querySelector(".modal-ajout-photo");
   modalAjoutPhoto.innerHTML = "";
   const photo = document.createElement("img");
-  photo.classList.add("photoChoose");
   photo.src = event.target.result;
-  console.log(photo.src);
   modalAjoutPhoto.appendChild(photo);
 }
-
-// Validation du formulaire
-
-formPhoto.addEventListener("submit", function(e) {
-  e.preventDefault();
-  const formData = new FormData(formPhoto);
-  for (item of formData) {
-    console.log(item[2], item[3]);
-  }
-})
-  // let titre = document.querySelector("#titre");
-  // let myRegex = /^[a-zA-Z-\s]+$/;
-
-  // if (titre.value == "") {
-  //   alert("Vous devez remplir le titre");
-  // } else if (myRegex.test(titre.value) == false) {
-  //   alert ("Le titre ne doit comporter que des lettres et des tirets");
-  // } else if (catSelect.value == "") {
-  //   alert ("Vous devez choisir une catégorie");
-  // } else if (photoChoose == "null") {
-  //   alert ("Vous devez choisir une photo");
-  // } else {
-  //   buttonPhoto.classList.remove("grey");
-  //   buttonPhoto.classList.add("green");
-
-    // const response = await fetch('/article/formdata/post/user-avatar', {
-    //   method: 'POST',
-    //   body: new FormData(formElem)
-    // });
-
-    // let result = await response.json();
-
-    // alert(result.message);
-  // }
-// });
-
-
-
 
 // REFLECHIR A RENDRE LA PREMIERE MODAL A NOUVEAU FONCTIONNELLE QUAND ON FERME LA SECONDE !!!

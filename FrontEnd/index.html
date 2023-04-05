@@ -107,14 +107,15 @@
                 <i class="fa-solid fa-x"></i>
               </button>
               <h2>Ajout photo</h2>
-              <div class="modal-ajout-photo">
-                <i class="fa-sharp fa-regular fa-image"></i>
-                <input type="file" class="blue" id="importPhoto" accept="image/jpg, image/png" hidden>
-                <label for="importPhoto">+ Ajouter photo</label>
-                <!-- <button  onclick="inser_photo()">+ Ajouter photo</button> -->
-                <p>jpg, png : 4mo max</p>
-              </div>
-              <form action="#" method="post">
+              <form action="#" method="post" id="form-photo">
+                <div class="modal-ajout-photo">
+                  <i class="fa-sharp fa-regular fa-image"></i>
+                  <input type="file" class="blue" id="importPhoto" accept="image/jpg, image/png" hidden>
+                  <input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
+                  <label for="importPhoto" id="labelPhoto">+ Ajouter photo</label>
+                  <!-- <button  onclick="inser_photo()">+ Ajouter photo</button> -->
+                  <p>jpg, png : 4mo max</p>
+                </div>
                 <label for="titre">Titre</label>
                 <input type="text" name="titre" id="titre" />
                 <label for="categorie">Catégorie</label>
@@ -124,9 +125,9 @@
                   <option value="2">Appartements</option>
                   <option value="3">Hotels & restaurants</option>
                 </select>
+                <hr />
+                <button type="submit" class="grey" id="submit-photo">Valider</button>
               </form>
-              <hr />
-              <button class="grey">Valider</button>
             </div>
           </div>
         </article>

@@ -110,12 +110,11 @@
               <form action="#" method="post" id="form-photo">
                 <div class="modal-ajout-photo">
                   <i class="fa-sharp fa-regular fa-image"></i>
-                  <input type="file" class="blue" id="importPhoto" accept="image/jpg, image/png" hidden>
-                  <input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
                   <label for="importPhoto" id="labelPhoto">+ Ajouter photo</label>
                   <!-- <button  onclick="inser_photo()">+ Ajouter photo</button> -->
                   <p>jpg, png : 4mo max</p>
                 </div>
+                <input type="file" class="blue" id="importPhoto" accept="image/jpg, image/png" name="image" hidden>
                 <label for="titre">Titre</label>
                 <input type="text" name="titre" id="titre" />
                 <label for="categorie">Catégorie</label>

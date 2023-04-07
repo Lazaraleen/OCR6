@@ -197,7 +197,7 @@ async function modalWorks() {
 }
 
 function deleWorks(e) {
-  // console.log("toto");
+  console.log("toto");
   fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
       method: "DELETE",
       headers: {
@@ -225,7 +225,6 @@ const openModal2 = function (e) {
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", openModal);
   modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
-  modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
   modalWorks();
 };
 
@@ -237,14 +236,10 @@ document.querySelectorAll(".js-modal2").forEach((e) => {
 // Choisir une image sur le clic bouton
 const importPhoto = document.querySelector("#importPhoto");
 importPhoto.addEventListener("change", previewFile);
+previewFile();
 
 function previewFile() {
   const file_extension_regex = /\.(jpg|png)$/i;
-  if (this.files.length == 0 || !file_extension_regex.test(this.files[0].name)) {
-    return;
-  }
-
-  const file = this.files[0];
   const file_reader = new FileReader();
   file_reader.readAsDataURL(file);
   file_reader.addEventListener("load", (e) => displayImage(e, file));
@@ -256,54 +251,46 @@ function displayImage(event, file) {
   const photo = document.createElement("img");
   photo.classList.add("photoChoose");
   photo.src = event.target.result;
-  // console.log(photo.src);
+  console.log(photo.src);
   modalAjoutPhoto.appendChild(photo);
 }
 
+// Validation du formulaire
 
-
-// **************************************  AJOUTER UN TRAVAIL **************************************
-
-const addForm = async (formData) => {
-  try {
-    const response = await fetch("http://" + window.location.hostname + ":5678/api/works/", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-formPhoto.addEventListener("submit", (e) => {
-  e.preventDefault(); 
-
-  const image = document.getElementById('importPhoto').files[0];
-  const titre = document.getElementById('titre').value;
-  const category = document.getElementById('category-select').value;
-
+buttonPhoto.addEventListener("click", function(e) {
+  e.preventDefault();
   const formData = new FormData();
-  formData.append("image", image);
-  formData.append("title", titre);
-  formData.append("category", category);
-  
-  // Regarder si le formulaire est valide avant de l'envoyer
-  let myRegex = /^[a-zA-Z-\s]+$/;
-  if ((titre == "") || (category == "") || (image == undefined) || (myRegex.test(titre) == false)) {
-    alert("Vous devez remplir tous les champs et le titre ne doit comporter que des lettres et des tirets");
-    return;
-  } else if (buttonPhoto.classList.contains("grey")){
-    buttonPhoto.classList.remove("grey");
-    buttonPhoto.classList.add("green");
-    return;
-    // Si en cliquant, le bouton devient visualViewport, cest qu'il est bon à être envoyé, il suffit de recliquer dessus
-  } else {
-    addForm(formData);
-    alert ("Un nouveau projet a été ajouté");
+  for (item of formData) {
+    console.log(item[2], item[3]);
   }
-});
+})
+  // let titre = document.querySelector("#titre");
+  // let myRegex = /^[a-zA-Z-\s]+$/;
 
+  // if (titre.value == "") {
+  //   alert("Vous devez remplir le titre");
+  // } else if (myRegex.test(titre.value) == false) {
+  //   alert ("Le titre ne doit comporter que des lettres et des tirets");
+  // } else if (catSelect.value == "") {
+  //   alert ("Vous devez choisir une catégorie");
+  // } else if (photoChoose == "null") {
+  //   alert ("Vous devez choisir une photo");
+  // } else {
+  //   buttonPhoto.classList.remove("grey");
+  //   buttonPhoto.classList.add("green");
+
+    // const response = await fetch('/article/formdata/post/user-avatar', {
+    //   method: 'POST',
+    //   body: new FormData(formElem)
+    // });
+
+    // let result = await response.json();
+
+    // alert(result.message);
+  // }
+// });
+
+
+
+
+// REFLECHIR A RENDRE LA PREMIERE MODAL A NOUVEAU FONCTIONNELLE QUAND ON FERME LA SECONDE !!!

@@ -15,9 +15,6 @@ let modal = null;
 let currentCategory = "Tous";
 const token = localStorage.token;
 
-const modal1 = document.querySelector(".modal1");
-const modal2 = document.querySelector(".modal2");
-
 
 async function getWorks() {
   // vider la gallerie des différents travaux
@@ -215,7 +212,6 @@ const delWorks = async (e) => {
   };
   // remplir la modal
   modalWorks();
-  // actualiser la page derrière la modal
   gallery.innerHTML="";
   getWorks();
 };
@@ -287,12 +283,20 @@ const addForm = async (formData) => {
   } catch (error) {
     console.log(error);
   }
+  // Fermer la seconde modal et actualiser la première (tout en gardant le fait de fermer la première fonctionnelle)
   const modal1 = document.querySelector(".modal1");
   const modal2 = document.querySelector(".modal2");
-  // Repasser sur la première modal actualisée
   modal2.style.display = "none";
+  closeModal;
   modal1.style.display = null;
+  modal = modal1;
+  modal.addEventListener("click", closeModal);
+  modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
+  modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
   modalWorks();
+  // Actualiser l'affichage de la page en arrière plan
+  gallery.innerHTML="";
+  getWorks();
 };
 
 formPhoto.addEventListener("submit", (e) => {

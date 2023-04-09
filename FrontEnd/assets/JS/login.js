@@ -14,14 +14,12 @@ document.querySelector("#connect").addEventListener("click", function(event){
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
       // Empêcher l'accès à la page juste en cliquant sur "se connecter"
       // Stocker les informations utilisateur localement
       localStorage.setItem("token", data.token);
-      console.log(data.token);
-      
-      // Rediriger l'utilisateur vers la page d'accueil
-      if (localStorage.token !== "undefined") { window.location.href = "./index.html"; }
+
+      // Rediriger l'utilisateur vers la page d'accueil 
+      if (localStorage.token !== "undefined"){ window.location.href = "./index.html"; }
       else { 
         window.location.href = "./login.html"; 
         alert("Email ou mot de passe incorrect.");

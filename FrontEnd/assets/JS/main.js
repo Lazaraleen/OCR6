@@ -15,6 +15,9 @@ let modal = null;
 let currentCategory = "Tous";
 const token = localStorage.token;
 
+const modal1 = document.querySelector(".modal1");
+const modal2 = document.querySelector(".modal2");
+
 
 async function getWorks() {
   // vider la gallerie des différents travaux
@@ -112,7 +115,8 @@ if (localStorage.token !== "undefined" && localStorage.length !== 0) {
   for (let i = 0; i < span.length; i++) {
     span[i].classList.remove("invisible");
   }
-  logout.addEventListener("click", deconnect());
+  logout.addEventListener("click", deconnect);
+  // Ne pas mettre les parenthèses à deconnect sinon ça appelle la fonction et déconnecte la session
 }
 
 // Pour se déconnecter
@@ -191,25 +195,31 @@ async function modalWorks() {
   for (element of buttonTrash) {
     element.addEventListener("click", (e) => {
       e.preventDefault();
-      deleWorks(e);
+      delWorks(e);
     });
-  }
+  };
 }
 
-function deleWorks(e) {
-  // console.log("toto");
-  fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log(response.status);
-    })
-    .catch((error) => console.log(error));
-}
+
+const delWorks = async (e) => {
+  const response = await fetch("http://" + window.location.hostname + ":5678/api/works/" + e.target.id, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  // console.log (response.status);
+  if (response.status == 200 || response.status == 204) {
+    alert ("Un projet a été supprimé");
+  };
+  // remplir la modal
+  modalWorks();
+  // actualiser la page derrière la modal
+  gallery.innerHTML="";
+  getWorks();
+};
+
 
 // **************************************  SECONDE MODAL **************************************
 
@@ -256,7 +266,6 @@ function displayImage(event, file) {
   const photo = document.createElement("img");
   photo.classList.add("photoChoose");
   photo.src = event.target.result;
-  // console.log(photo.src);
   modalAjoutPhoto.appendChild(photo);
 }
 
@@ -273,10 +282,17 @@ const addForm = async (formData) => {
         Authorization: `Bearer ${token}`,
       },
       body: formData,
-    });
+    });    
+    if (response.status == 201) {alert ("Un nouveau projet a été ajouté")};
   } catch (error) {
     console.log(error);
   }
+  const modal1 = document.querySelector(".modal1");
+  const modal2 = document.querySelector(".modal2");
+  // Repasser sur la première modal actualisée
+  modal2.style.display = "none";
+  modal1.style.display = null;
+  modalWorks();
 };
 
 formPhoto.addEventListener("submit", (e) => {
@@ -300,10 +316,9 @@ formPhoto.addEventListener("submit", (e) => {
     buttonPhoto.classList.remove("grey");
     buttonPhoto.classList.add("green");
     return;
-    // Si en cliquant, le bouton devient visualViewport, cest qu'il est bon à être envoyé, il suffit de recliquer dessus
+    // Si en cliquant, le bouton devient vert, cest qu'il est bon à être envoyé, il suffit de recliquer dessus
   } else {
     addForm(formData);
-    alert ("Un nouveau projet a été ajouté");
   }
 });
 

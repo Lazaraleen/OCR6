@@ -103,15 +103,19 @@
         <article id="modal" class="modal2" style="display: none">
           <div class="modal-wrapper js-modal-stop">
             <div class="align">
-              <button class="js-modal-close">
-                <i class="fa-solid fa-x"></i>
-              </button>
+              <div class="icons">
+                <a href=".modal1">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <button class="js-modal-close">
+                  <i class="fa-solid fa-x"></i>
+                </button>
+              </div>
               <h2>Ajout photo</h2>
               <form action="#" method="post" id="form-photo">
                 <div class="modal-ajout-photo">
                   <i class="fa-sharp fa-regular fa-image"></i>
                   <label for="importPhoto" id="labelPhoto">+ Ajouter photo</label>
-                  <!-- <button  onclick="inser_photo()">+ Ajouter photo</button> -->
                   <p>jpg, png : 4mo max</p>
                 </div>
                 <input type="file" class="blue" id="importPhoto" accept="image/jpg, image/png" name="image" hidden>

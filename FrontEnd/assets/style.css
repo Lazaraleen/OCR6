@@ -355,6 +355,19 @@ article span {
 /* ******************************************************** */
 /* CSS pour fenêtre modal */
 
+.icons {
+	display: flex;
+	width: 100%;
+}
+
+.fa-arrow-left {
+	color: black;
+	font-size: 1.2em;
+	padding: 5px;
+	position: relative;
+	left: -70px;
+}
+
 .js-modal-close {
 	margin: 5px;
 	padding: 0;

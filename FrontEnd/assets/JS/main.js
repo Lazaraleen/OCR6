@@ -13,7 +13,7 @@ const modalAjoutPhoto = document.querySelector(".modal-ajout-photo");
 let trashButtons = [];
 let modal = null;
 let currentCategory = "Tous";
-const token = localStorage.token;
+const token = sessionStorage.token;
 
 
 async function getWorks() {
@@ -56,7 +56,7 @@ async function getCategories() {
 }
 
 // Si la personne n'est pas connectée, afficher les catégories
-if (localStorage.token == "undefined" || localStorage.length == 0) {
+if (sessionStorage.token == "undefined" || sessionStorage.length == 0) {
   getCategories();
 }
 
@@ -105,7 +105,7 @@ function project(key) {
 // ************************************** LOGIN ET LOGOUT  **************************************
 
 // Changer login pour logout
-if (localStorage.token !== "undefined" && localStorage.length !== 0) {
+if (sessionStorage.token !== "undefined" && sessionStorage.length !== 0) {
   logout.classList.remove("invisible");
   login.classList.add("invisible");
   edition.classList.remove("invisible");
@@ -118,7 +118,7 @@ if (localStorage.token !== "undefined" && localStorage.length !== 0) {
 
 // Pour se déconnecter
 function deconnect() {
-  localStorage.clear();
+  sessionStorage.clear();
 }
 
 // **************************************  MODAL **************************************
@@ -225,9 +225,12 @@ const openModal2 = function (e) {
   modal1.style.display = "none";
   const target = document.querySelector(".modal2");
   target.style.display = null;
+  resetForm();
   modal = target;
   modal.addEventListener("click", closeModal);
   modal.addEventListener("click", openModal);
+  modal.querySelector(".fa-arrow-left").addEventListener("click", closeModal);
+  modal.querySelector(".fa-arrow-left").addEventListener("click", openModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", openModal);
   modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
@@ -238,6 +241,14 @@ const openModal2 = function (e) {
 document.querySelectorAll(".js-modal2").forEach((e) => {
   e.addEventListener("click", openModal2);
 });
+
+function resetForm() {
+  document.getElementById("form-photo").reset();
+  const modalAjoutPhoto = document.querySelector(".modal-ajout-photo");
+  modalAjoutPhoto.innerHTML = `<i class="fa-sharp fa-regular fa-image"></i>
+                  <label for="importPhoto" id="labelPhoto">+ Ajouter photo</label>
+                  <p>jpg, png : 4mo max</p>`;
+}
 
 
 // Choisir une image sur le clic bouton

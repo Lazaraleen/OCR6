@@ -455,14 +455,6 @@ article span {
 	margin: 0 auto;
 }
 
-/* .blue {
-	background-color: #CBD6DC;
-	width: 173px;
-	color: #306685;
-	border: none;
-	margin-top: 21px;
-} */
-
 .modal-gallery {
 	display: grid;
 	column-gap: 10px;
@@ -504,6 +496,8 @@ article span {
 	background-color: transparent;
 }
 
+/* CSS pour seconde fenêtre modal */
+
 .modal-ajout-photo {
 	background-color: #E8F1F6;
 	width: 100%;
@@ -521,14 +515,6 @@ article span {
 .modal-ajout-photo img {
 	max-height: 173px;
 }
-
-/* .modal-ajout-photo button {
-	background-color: #CBD6DC;
-	width: 173px;
-	color: #306685;
-	border: none;
-	margin-top: 21px;
-} */
 
 #labelPhoto {
 	background-color: #CBD6DC;

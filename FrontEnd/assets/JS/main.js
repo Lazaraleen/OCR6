@@ -242,6 +242,8 @@ document.querySelectorAll(".js-modal2").forEach((e) => {
   e.addEventListener("click", openModal2);
 });
 
+// Pour rafraîchir le formulaire si on sort de la modale
+
 function resetForm() {
   document.getElementById("form-photo").reset();
   const modalAjoutPhoto = document.querySelector(".modal-ajout-photo");
@@ -310,6 +312,7 @@ const addForm = async (formData) => {
   getWorks();
 };
 
+// Formulaire ajout de travail
 formPhoto.addEventListener("submit", (e) => {
   e.preventDefault(); 
 

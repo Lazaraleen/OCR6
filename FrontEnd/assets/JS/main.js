@@ -114,6 +114,7 @@ if (sessionStorage.token !== "undefined" && sessionStorage.length !== 0) {
   // Ne pas mettre les parenthèses à deconnect sinon ça appelle la fonction et déconnecte la session
 }
 
+// Pour s'assurer que l'affichage soit le bon même sur un simple refresh de la page
 if (!sessionStorage.token) {
   logout.classList.add("invisible");
   login.classList.remove("invisible");

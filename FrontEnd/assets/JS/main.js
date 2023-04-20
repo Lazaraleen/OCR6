@@ -56,7 +56,7 @@ async function getCategories() {
 }
 
 // Si la personne n'est pas connectée, afficher les catégories
-if (sessionStorage.token == "undefined" || sessionStorage.length == 0) {
+if (!sessionStorage.token) {
   getCategories();
 }
 
@@ -73,9 +73,7 @@ function buttonCat(cat) {
 
 // Filtrer les catégories
 function filterWorks(button) {
-  console.log("début");
   const allfilter = [...divcat.children];
-  console.log(allfilter);
   allfilter.forEach((element) => {
     element.classList.remove("selected");
   });
@@ -116,9 +114,18 @@ if (sessionStorage.token !== "undefined" && sessionStorage.length !== 0) {
   // Ne pas mettre les parenthèses à deconnect sinon ça appelle la fonction et déconnecte la session
 }
 
+if (!sessionStorage.token) {
+  logout.classList.add("invisible");
+  login.classList.remove("invisible");
+  edition.classList.add("invisible");
+  for (let i = 0; i < span.length; i++) {
+    span[i].classList.add("invisible");
+  }
+}
+
 // Pour se déconnecter
 function deconnect() {
-  sessionStorage.clear();
+  sessionStorage.removeItem("token");
 }
 
 // **************************************  MODAL **************************************
